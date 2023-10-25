@@ -1,0 +1,75 @@
+body ,div{
+    margin: 0;
+    padding: 0;
+}
+hr{
+    width: 90%;
+}
+.outerFrame{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100%;
+    background-color: antiquewhite;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1200px;
+    height: 90%;
+    width: 90%;
+    border: 1px solid rgb(56, 56, 56);
+    margin: 20px 0px 20px 0px;
+}
+.titleBlock{
+    display: flex;
+    justify-content: center;
+    margin: 10px auto 20px auto;
+}
+.title{
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 26px;
+}
+.functionBlock{
+    display: flex;
+    justify-content: center;
+}
+.functionForm{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+.imgDescFrame{
+    display: flex;
+    align-items: center;
+}
+.imgFileFrame{
+    display: flex;
+    align-items: center;
+}
+.functionBlockSummit{
+    margin: auto;
+}
+
+.showUpFrame{
+    max-width: 1200px;
+    width: 80%;
+    margin: 20px;
+}
+.showUpDesc{
+    font-size: 20px;
+}
+.showUpImg{
+    height: 200px;
+}
+.showUpImgTarget{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Bot</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+</head>
+<body>
+    <div class="outerFrame">
+        <div class="center">
+            <div class="titleBlock">
+                <h1 class="title">發表一篇圖文</h1>
+            </div>
+            <div class="functionBlock">
+                <form class="functionForm" action="/newPost" method="POST">
+                    <div class="imgDescFrame">
+                        <label for="imgDesc" class="imgDesc">文字內容</label>
+                        <input type="text" id="imgDesc" name="imgDesc"/>
+                    </div>
+                    <div class="imgFileFrame">
+                        <label for="imgFile" class="imgFile">圖片檔案</label>
+                        <input type="file" id="imgFile" name="imgFile"/>
+                    </div>
+                    <button class="functionBlockSummit">送出</button>
+                </form>
+            </div>
+            <hr>
+            <div class="showUpFrame">
+                <div class="showUpBlock">
+                    <div class="showUpDesc">不要傑哥</div>
+                    <div class="showUpImg">
+                        <img class="showUpImgTarget" src="/img/2023-03-29_000608.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
