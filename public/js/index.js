@@ -3,7 +3,12 @@ const imgDescInput = document.querySelector('#imgDesc');
 const form = document.querySelector('form');
 
 
-form.addEventListener('submit', (event) => {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+form.addEventListener('submit', async (event) => {
     event.preventDefault();
     
     const formData = new FormData();
@@ -29,9 +34,9 @@ form.addEventListener('submit', (event) => {
          console.error('upload fail', error);
     });
 
+    await sleep(1000)
     window.location.href = "/"
 });
-
 
 
 async function loadin() {
@@ -48,9 +53,10 @@ async function loadin() {
     }
 }
 
+
 function createReactTree(data) {
     return data.map((item, i) => {
-        const imgSrc = `https://brokenbucketgijoe.s3.us-west-2.amazonaws.com/${item.img_url}`;
+        const imgSrc = `https://d2ndnbzl6dhb4z.cloudfront.net/${item.img_url}`;
         return React.createElement('div', { key: i, className: 'showUpFrame' },
             React.createElement('div', { className: 'showUpBlock' }, [
                 React.createElement('div', { key: 'desc', className: 'showUpDesc' }, item.msg),
@@ -66,7 +72,8 @@ function createReactTree(data) {
         );
     });
 }
-  
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const data = await loadin();

@@ -10,7 +10,10 @@ const s3_connector = require("./model/s3_connector")
 // instance
 const app = express();
 const apiRoutes = express.Router();
-const upload = multer({ storage: multer.memoryStorage() }); // 暫存
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+}); // 暫存
 // 創建一個 Snowflake ID 生成器
 const generator = new Snowflake({mid: 1,});
 // 生成 Snowflake ID
@@ -59,13 +62,16 @@ app.post('/newPost', upload.single('imgFile'), (req, res) => {
         db_connector.getConnectionAndData(query, values, (err) => {
             if (err) {
                 console.error('fail to insert into sql', err);
+                req.file.buffer = null;
                 return res.status(500).send('fail to insert into sql');
             }
         });
         console.log('success to insert into sql');
+        req.file.buffer = null;
         return res.redirect('/');
     } else {
         console.error('file upload fail');
+        req.file.buffer = null;
         return res.status(500).send('file upload fail');
     }
 });
