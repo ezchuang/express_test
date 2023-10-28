@@ -16,8 +16,7 @@ const upload = multer({
 }); // 暫存
 // 創建一個 Snowflake ID 生成器
 const generator = new Snowflake({mid: 1,});
-// 生成 Snowflake ID
-const snowflakeId = generator.generate();
+
 
 
 // middleware
@@ -48,32 +47,34 @@ app.get("/", (req, res) => {
 })
 
 
-app.post('/newPost', upload.single('imgFile'), (req, res) => {
+app.post('/newPost', upload.single('imgFile'), async (req, res) => {
     // 透過 Multer middleware 將 file 轉存在 req.file
     console.log("req.file: ", req.file)
     console.log("req.body: ", req.body)
     if (req.file) {
+        // 生成 Snowflake ID
+        const snowflakeId = generator.generate();
         const newFileName = `${snowflakeId}.jpeg`;
-        s3_connector.sendToS3(newFileName, req.file.buffer);
+        const s3UploadPromise = s3_connector.sendToS3(newFileName, req.file.buffer);
     
         const query = 'INSERT INTO log_table(msg, img_url) VALUES (?, ?)';
         const values = [req.body.imgDesc, newFileName];
     
-        db_connector.getConnectionAndData(query, values, (err) => {
+        await db_connector.getConnectionAndData(query, values, (err) => {
             if (err) {
                 console.error('fail to insert into sql', err);
-                req.file.buffer = null;
-                return res.status(500).send('fail to insert into sql');
+                res.status(500).json({ "msg": 'fail to insert into sql' });
             }
         });
         console.log('success to insert into sql');
-        req.file.buffer = null;
-        return res.redirect('/');
+        res.status(200).json({ "msg": 'success to insert into sql' });
+        await s3UploadPromise
     } else {
         console.error('file upload fail');
-        req.file.buffer = null;
-        return res.status(500).send('file upload fail');
+        res.status(500).json({ "msg": 'file upload fail' });
     }
+    req.file.buffer = null;
+    return
 });
 
 
@@ -83,10 +84,10 @@ apiRoutes.get("/getMsg/:num_msg", async (req, res) => {
         let values = (Number(req.params.num_msg) + 1) * 20
         let query = `SELECT * FROM log_table ORDER BY id DESC LIMIT ?`
         const data = await db_connector.getConnectionAndData(query, values);
-        return res.status(200).json({"data": data})
+        return res.status(200).json({ "data": data })
     } catch (err) {
         console.error("處理資料庫查詢時發生錯誤:", err);
-        return res.status(500).json({ error: "伺服器內部錯誤" });
+        return res.status(500).json({ "error": "伺服器內部錯誤" });
     }
 })
 

@@ -27,15 +27,14 @@ form.addEventListener('submit', async (event) => {
             throw new Error('upload fail');
         }
     })
-    .then(data => {
+    .then(async data => {
         console.log('upload success', data);
+        await sleep(1000)
+        window.location.href = "/"
     })
     .catch(error => {
          console.error('upload fail', error);
     });
-
-    await sleep(1000)
-    window.location.href = "/"
 });
 
 

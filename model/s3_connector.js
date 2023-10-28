@@ -21,16 +21,15 @@ function sendToS3(file_id, file){
         Body: file,
         ContentType: 'image/jpeg',
     }
-    
-    s3.upload(uploadParams, (err, data) => {
-        if (err) {
-            console.error('上傳失敗:', err);
-        } else {
-            console.log('上傳成功，S3 物件 URL:', data.Location);
-        }
-    });
-
-    return
+    return new Promise((resolve, reject) => {
+        s3.upload(uploadParams, (err, data) => {
+            if (err) {
+                reject('上傳失敗:', err);
+            } else {
+                resolve('上傳成功，S3 物件 URL:', data.Location);
+            }
+        });
+    })
 }
 
 module.exports.sendToS3 = sendToS3;
